@@ -20,7 +20,7 @@ function App() {
   // }, []);
 
   useEffect(()=>{
-    const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=3';
+    const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=30';
     const fetchToDos = async () => {
       try{
         const response = await axios.get(URL);
@@ -37,6 +37,7 @@ function App() {
     const newTodo = {
       id: count, title
     };
+    console.log(count, title);
     setTodos([...todos, newTodo]);
   }
 
@@ -54,11 +55,24 @@ function App() {
     setSortAsc(!sortAsc);
   }
 
+    const sortTodosById = () => {
+    const sorted = [...todos].sort((a, b) => {
+      if(a.id < b.id) return sortAsc ? -1 : 1;
+      if(a.id > b.id) return sortAsc ? 1 : -1;
+      return 0;
+    })
+    setTodos(sorted);
+    setSortAsc(!sortAsc);
+  }
+
   return (
     <div className="bg-grey p-5 flex flex-col items-center">
       <h1 className='text-2xl font-bold text-center mb-4'>My Todo List</h1>
       <TodoForm onAddTodo = {addTodo}/>
-      <button onClick={sortTodos} className='bg-sky-500/50 py-2 px-4 rounded-xl mb-5'>Sort {sortAsc ? 'A - Z' : 'Z - A'}</button>
+      <div className='p-5 flex flex-row justify-between'>
+        <button onClick={sortTodos} className='bg-sky-500/50 py-2 mr-2 inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? 'A - Z' : 'Z - A'}</button>
+        <button onClick={sortTodosById} className='bg-sky-500/50 py-2  inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? '0 - 9' : '9 - 0'}</button>
+      </div>
       <TodoList todos={todos} onDeleteTodo={deleteTodo} />
     </div>
   )
