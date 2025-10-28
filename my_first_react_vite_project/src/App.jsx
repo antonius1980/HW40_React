@@ -73,12 +73,12 @@ function App() {
   }
 
   const sortTodos = () => {
+    if (todos.length > 1) {
     const sorted = [...todos].sort((a, b) => {
-      if (a.title.toLowerCase() < b.title.toLowerCase()) return sortAsc ? -1 : 1;
-      if (a.title.toLowerCase() > b.title.toLowerCase()) return sortAsc ? 1 : -1;
+      if (a.title.toLowerCase() > b.title.toLowerCase()) return sortAsc ? -1 : 1;
+      if (a.title.toLowerCase() < b.title.toLowerCase()) return sortAsc ? 1 : -1;
       return 0;
     })
-    if (todos.length > 1) {
       setTodos(sorted);
       setSortAsc(!sortAsc);
     }
@@ -86,24 +86,25 @@ function App() {
   }
 
     const sortTodosById = () => {
-    const sorted = [...todos].sort((a, b) => {
-      if(a.id < b.id) return sortAscId ? -1 : 1;
-      if(a.id > b.id) return sortAscId ? 1 : -1;
-      return 0;
-    })
     if (todos.length > 1) {
-      setTodos(sorted);
-      setSortAscId(!sortAscId);
+      const sorted = [...todos].sort((a, b) => {
+        if(a.id > b.id) return sortAscId ? -1 : 1;
+        if(a.id < b.id) return sortAscId ? 1 : -1;
+        return 0;
+      })
+
+        setTodos(sorted);
+        setSortAscId(!sortAscId);
     }
   }
-
+//todo: inside of return() below place &#8597; arrow properly replacing the arrowhere text
   return (
     <div className="bg-gray-100 p-6 flex flex-col items-center rounded-xl border border-sky-700">
       <h1 className='text-2xl font-bold text-center mb-4'>My Todo List</h1>
       <TodoForm onAddTodo = {addTodo}/>
       <div className='p-5 flex flex-row justify-between'>
-        <button onClick={sortTodos} className='bg-sky-500/50 py-2 mr-2 inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? 'A - Z' : 'Z - A'}</button>
-        <button onClick={sortTodosById} className='bg-sky-500/50 py-2  inline-block px-4 rounded-xl mb-5'>Sort {sortAscId ? '0 - 9' : '9 - 0'}</button>
+        <button onClick={sortTodos} className='bg-sky-500/50 py-2 mr-2 inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? 'A - Z ↑'  : 'Z - A ↓'}</button>
+        <button onClick={sortTodosById} className='bg-sky-500/50 py-2  inline-block px-4 rounded-xl mb-5'>Sort by id {sortAscId ? '0 - 9 ↑' : '9 - 0 ↓'}</button>
       </div>
       <TodoList todos={todos} onDeleteTodo={deleteTodo} onCheckTodo={checkTodo} />
     </div>
