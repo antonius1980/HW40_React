@@ -7,6 +7,8 @@ import './App.css'
 function App() {
   const [todos, setTodos] = useState([]);
   const [sortAsc, setSortAsc] = useState(true);
+  const [sortAscId, setSortAscId] = useState(true);
+  
 
 
   // useEffect(() => {
@@ -44,12 +46,12 @@ function App() {
   //   localStorage.setItem('todos', JSON.stringify(todos))
   // }, [todos]);
 
-  const addTodo = (title, category) => {
+  const addTodo = (title, category, checked) => {
     let count = todos.length + 1;
     const newTodo = {
-      id: count, title, category
+      id: count, title, category, checked
     };
-    console.log(count, title);
+    console.log(count, title, category, checked);
     setTodos([...todos, newTodo]);
   }
 
@@ -60,6 +62,11 @@ function App() {
         ...todo,
         id: index + 1,
       }))
+    setTodos(updateTodos);
+  }
+
+  const checkTodo = (id) => {
+    const checkTodo = todos.filter((todo) => todo.id === id).map((todo, checked) => ({ ...todo, checked: checked, }))
     setTodos(updateTodos);
   }
 
@@ -75,12 +82,12 @@ function App() {
 
     const sortTodosById = () => {
     const sorted = [...todos].sort((a, b) => {
-      if(a.id < b.id) return sortAsc ? -1 : 1;
-      if(a.id > b.id) return sortAsc ? 1 : -1;
+      if(a.id < b.id) return sortAscId ? -1 : 1;
+      if(a.id > b.id) return sortAscId ? 1 : -1;
       return 0;
     })
     setTodos(sorted);
-    setSortAsc(!sortAsc);
+    setSortAscId(!sortAscId);
   }
 
   return (
@@ -89,9 +96,9 @@ function App() {
       <TodoForm onAddTodo = {addTodo}/>
       <div className='p-5 flex flex-row justify-between'>
         <button onClick={sortTodos} className='bg-sky-500/50 py-2 mr-2 inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? 'A - Z' : 'Z - A'}</button>
-        <button onClick={sortTodosById} className='bg-sky-500/50 py-2  inline-block px-4 rounded-xl mb-5'>Sort {sortAsc ? '0 - 9' : '9 - 0'}</button>
+        <button onClick={sortTodosById} className='bg-sky-500/50 py-2  inline-block px-4 rounded-xl mb-5'>Sort {sortAscId ? '0 - 9' : '9 - 0'}</button>
       </div>
-      <TodoList todos={todos} onDeleteTodo={deleteTodo} />
+      <TodoList todos={todos} onDeleteTodo={deleteTodo} onCheckTodo={checkTodo} />
     </div>
   )
 }

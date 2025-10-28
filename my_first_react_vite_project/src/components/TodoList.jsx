@@ -1,7 +1,7 @@
 import TodoItem from './TodoItem';
 import '../App.css';
 
-function TodoList({ todos, onDeleteTodo }) {
+function TodoList({ todos, onDeleteTodo, onCheckTodo }) {
     
     return (
        <ul className='min-w-md w-full'>
@@ -9,7 +9,7 @@ function TodoList({ todos, onDeleteTodo }) {
             <p>Your todo list is empty</p>
         ) : (
             todos.map((todo) => (
-                <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo}/>
+                <TodoItem key={todo.id} todo={todo} onDeleteTodo={onDeleteTodo} onCheckTodo={onCheckTodo}/>
             ))
         )}
        </ul>
