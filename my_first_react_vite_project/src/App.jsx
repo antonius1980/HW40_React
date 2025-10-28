@@ -5,7 +5,15 @@ import TodoList from './components/TodoList';
 import './App.css'
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  // const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('todos')) || [];
+    } catch {
+      return [];
+    }
+  });
+
   const [sortAsc, setSortAsc] = useState(true);
   const [sortAscId, setSortAscId] = useState(true);
   
@@ -21,26 +29,39 @@ function App() {
   //     })
   // }, []);
 
-  useEffect(() => {
-    const saveTodos = localStorage.getItem('todos');
+  // useEffect(() => {
+  //   const saveTodos = localStorage.getItem('todos');
     
     
-    if (saveTodos) {
-      setTodos(JSON.parse(saveTodos))
-    } else {
+  //   if (saveTodos) {
+  //     setTodos(JSON.parse(saveTodos))
+  //   } else {
       
-      const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=10';
-    const fetchToDos = async () => {
-        try {
-        const response = await axios.get(URL);
-        setTodos(response.data)
-      } catch (err) {
-        console.log(err)
-        }
-    };
-    fetchToDos();
+  //     const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=10';
+  //   const fetchToDos = async () => {
+  //       try {
+  //       const response = await axios.get(URL);
+  //       setTodos(response.data)
+  //     } catch (err) {
+  //       console.log(err)
+  //       }
+  //   };
+  //   fetchToDos();
+  //   }
+  // }, [])
+
+  useEffect(() => {
+  if (todos.length > 0) return;
+  const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=10';
+  (async () => {
+    try {
+      const { data } = await axios.get(URL);
+      setTodos(data);
+    } catch (err) {
+      console.log(err);
     }
-  }, [])
+  })();
+}, []);
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos))
