@@ -14,4 +14,11 @@
   font-size: 30px;
   text-decoration: underline;
 }
+input[type='checkbox'] + span::first-letter {
+text-transform: capitalize;
+}
 
+input[type='checkbox']:checked + span {
+  text-decoration: line-through;
+  color: #999;
+}
