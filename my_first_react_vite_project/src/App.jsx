@@ -19,43 +19,54 @@ function App() {
   //     })
   // }, []);
 
-  useEffect(()=>{
-    const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=30';
+  useEffect(() => {
+    const saveTodos = localStorage.getItem('todos');
+    
+    
+    if (saveTodos) {
+      setTodos(JSON.parse(saveTodos))
+    } else {
+      
+      const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=0';
     const fetchToDos = async () => {
-      try{
+        try {
         const response = await axios.get(URL);
         setTodos(response.data)
       } catch (err) {
         console.log(err)
-      } 
+        }
     };
     fetchToDos();
+    }
   }, [])
 
-  const addTodo = (title) => {
+  // useEffect(() => {
+  //   localStorage.setItem('todos', JSON.stringify(todos))
+  // }, [todos]);
+
+  const addTodo = (title, category) => {
     let count = todos.length + 1;
     const newTodo = {
-      id: count, title
+      id: count, title, category
     };
     console.log(count, title);
     setTodos([...todos, newTodo]);
   }
 
-  //Todo recalculate id's when item deleted
-  
-
   const deleteTodo = (id) => {
-    setTodos((prev) =>
-      prev
+    const updateTodos = todos
         .filter((todo) => todo.id !== id)
-        .map((todo, index) => ({ ...todo, id: index + 1 }))
-    );
+      .map((todo, index) => ({
+        ...todo,
+        id: index + 1,
+      }))
+    setTodos(updateTodos);
   }
 
   const sortTodos = () => {
     const sorted = [...todos].sort((a, b) => {
-      if(a.title.toLowerCase() < b.title.toLowerCase()) return sortAsc ? -1 : 1;
-      if(a.title.toLowerCase() > b.title.toLowerCase()) return sortAsc ? 1 : -1;
+      if (a.title.toLowerCase() < b.title.toLowerCase()) return sortAsc ? -1 : 1;
+      if (a.title.toLowerCase() > b.title.toLowerCase()) return sortAsc ? 1 : -1;
       return 0;
     })
     setTodos(sorted);
@@ -73,7 +84,7 @@ function App() {
   }
 
   return (
-    <div className="bg-grey p-5 flex flex-col items-center">
+    <div className="bg-gray-500 p-6 flex flex-col items-center rounded-xl">
       <h1 className='text-2xl font-bold text-center mb-4'>My Todo List</h1>
       <TodoForm onAddTodo = {addTodo}/>
       <div className='p-5 flex flex-row justify-between'>
@@ -87,6 +98,8 @@ function App() {
 
 export default App;
 
+
+// ----------------------------------------------------------------
 
 // let todos = [
 // {1, 'Купити хліб', false},
