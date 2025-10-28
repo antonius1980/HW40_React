@@ -66,8 +66,10 @@ function App() {
   }
 
   const checkTodo = (id) => {
-    const checkTodo = todos.filter((todo) => todo.id === id).map((todo, checked) => ({ ...todo, checked: checked, }))
-    setTodos(updateTodos);
+    const updated = todos.map((todo) =>
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+    );
+    setTodos(updated);
   }
 
   const sortTodos = () => {
