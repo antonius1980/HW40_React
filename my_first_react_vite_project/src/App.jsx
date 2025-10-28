@@ -78,8 +78,11 @@ function App() {
       if (a.title.toLowerCase() > b.title.toLowerCase()) return sortAsc ? 1 : -1;
       return 0;
     })
-    setTodos(sorted);
-    setSortAsc(!sortAsc);
+    if (todos.length > 1) {
+      setTodos(sorted);
+      setSortAsc(!sortAsc);
+    }
+
   }
 
     const sortTodosById = () => {
@@ -88,12 +91,14 @@ function App() {
       if(a.id > b.id) return sortAscId ? 1 : -1;
       return 0;
     })
-    setTodos(sorted);
-    setSortAscId(!sortAscId);
+    if (todos.length > 1) {
+      setTodos(sorted);
+      setSortAscId(!sortAscId);
+    }
   }
 
   return (
-    <div className="bg-gray-500 p-6 flex flex-col items-center rounded-xl">
+    <div className="bg-gray-100 p-6 flex flex-col items-center rounded-xl border border-sky-700">
       <h1 className='text-2xl font-bold text-center mb-4'>My Todo List</h1>
       <TodoForm onAddTodo = {addTodo}/>
       <div className='p-5 flex flex-row justify-between'>
