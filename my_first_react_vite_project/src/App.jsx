@@ -41,8 +41,15 @@ function App() {
     setTodos([...todos, newTodo]);
   }
 
+  //Todo recalculate id's when item deleted
+  
+
   const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id))
+    setTodos((prev) =>
+      prev
+        .filter((todo) => todo.id !== id)
+        .map((todo, index) => ({ ...todo, id: index + 1 }))
+    );
   }
 
   const sortTodos = () => {
