@@ -4,17 +4,17 @@ import '../App.css';
 function TodoForm({ onAddTodo }) {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('Освіта');
-    const [checked, setChecked] = useState(false);
+    const [completed, setCompleted] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (title.trim() === '') return;
 
-        onAddTodo(title, category, checked);
+        onAddTodo(title, category, completed);
         setTitle('');
         setCategory('Освіта');
-        setChecked(false);
+        setCompleted(false);
     }
 
     return (
@@ -36,8 +36,8 @@ function TodoForm({ onAddTodo }) {
             <input 
                 id='isDone'
                 type='checkbox' 
-                checked={checked} 
-                onChange={(e) => setChecked(e.target.checked)} 
+                checked={completed} 
+                onChange={(e) => setCompleted(e.target.checked)} 
                 className='mr-5 cursor-pointer size-6 outline-orange-400'
             />
             <button type='submit' className='bg-sky-600/90 hover:bg-sky-500/90 text-white font-medium py-2 px-6 rounded-md ml-auto outline-orange-400 cursor-pointer'>Add Todo</button>

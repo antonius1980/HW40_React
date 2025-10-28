@@ -29,7 +29,7 @@ function App() {
       setTodos(JSON.parse(saveTodos))
     } else {
       
-      const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=0';
+      const URL = 'https://jsonplaceholder.typicode.com/todos?_limit=10';
     const fetchToDos = async () => {
         try {
         const response = await axios.get(URL);
@@ -42,16 +42,16 @@ function App() {
     }
   }, [])
 
-  // useEffect(() => {
-  //   localStorage.setItem('todos', JSON.stringify(todos))
-  // }, [todos]);
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos]);
 
-  const addTodo = (title, category, checked) => {
+  const addTodo = (title, category, completed) => {
     let count = todos.length + 1;
     const newTodo = {
-      id: count, title, category, checked
+      id: count, title, category, completed
     };
-    console.log(count, title, category, checked);
+    console.log(count, title, category, completed);
     setTodos([...todos, newTodo]);
   }
 
@@ -67,7 +67,7 @@ function App() {
 
   const checkTodo = (id) => {
     const updated = todos.map((todo) =>
-      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
     setTodos(updated);
   }
